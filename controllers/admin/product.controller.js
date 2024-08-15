@@ -151,10 +151,6 @@ module.exports.createPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
-  if(req.file){
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
-
   const product = new Product(req.body);  // req.body là dữ liệu từ form
   await product.save();   // Lưu vào database
   req.flash("success", "Thêm sản phẩm thành công !");
@@ -191,9 +187,6 @@ module.exports.editPatch = async (req, res) => {
 
   req.body.position = parseInt(req.body.position);
 
-  if(req.file){
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
 
   try{
     await Product.updateOne({ _id: req.params.id}, req.body );
