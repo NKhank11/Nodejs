@@ -42,8 +42,17 @@ module.exports.index = async (req, res) => {
   //End pagination
 
 
+  let sort = {};
+  
+  if(req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  }
+  else {
+    sort.position = "desc";
+  }
+
   const products = await Product.find(find)
-    .sort({ position: "desc" })
+    .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
 
@@ -158,7 +167,7 @@ module.exports.createPost = async (req, res) => {
 }
 
 // [GET] /admin/products/edit/:id
-module.exports.edit = async (req, res) => {
+module.exports.edit = async (req, res) => { 
   try{
     const find = {
       deleted: false,
