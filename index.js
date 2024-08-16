@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 require("dotenv").config();
 const methodOverride = require('method-override');
 const bodyParser = require("body-parser");
@@ -25,6 +26,12 @@ app.use(cookieParser('HDSBGKSKJS')); // Key tự tạo để mã hóa cookie
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 // End Flash
+
+// TinyMCE
+app.use(
+  '/tinymce',
+  express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// End TinyMCE
 
 
 // parse application/x-www-form-urlencoded
