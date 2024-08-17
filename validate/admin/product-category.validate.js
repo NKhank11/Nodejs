@@ -5,3 +5,11 @@ module.exports.createPost = (req, res, next) => {
   }
   next();
 }
+
+module.exports.editPatch = (req, res, next) => {
+  if(!req.body.title) {
+    req.flash("error", "Vui lòng nhập tên sản phẩm !");
+    return res.redirect("back");
+  }
+  next();
+}

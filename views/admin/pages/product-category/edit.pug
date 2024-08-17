@@ -4,11 +4,12 @@ include ../../mixins/select-tree.pug
 
 block main 
   +alert-error(5000)
+  +alert-success(5000)
 
-  h1(class="mb-4") Thêm danh mục sản phẩm
+  h1(class="mb-4") Chỉnh sửa danh mục sản phẩm
 
   form(
-    action=`${prefixAdmin}/product-category/create`
+    action=`${prefixAdmin}/product-category/edit/${category.id}?_method=PATCH`
     method="POST"
     enctype="multipart/form-data"
   )
@@ -20,6 +21,7 @@ block main
         id="title"
         name="title"
         required
+        value=category.title
       )
     div(class="form-group")
       label(for="parent_id") Danh mục cha
@@ -30,7 +32,7 @@ block main
       )
         option(value="") -- Chọn danh mục --
         if(records) 
-          +select-tree(records)
+          +select-tree(records, 1, category.parent_id)
 
     div(class="form-group")
       label(for="desc") Mô tả
@@ -39,7 +41,7 @@ block main
         id="desc"
         name="description"
         rows="5"
-      )
+      ) #{category.description}
     div(
       class="form-group"
       upload-image
@@ -54,7 +56,7 @@ block main
         upload-image-input
       )
       img(
-        src=""
+        src=category.thumbnail
         upload-image-preview
         class="image-preview"
       )
@@ -67,6 +69,7 @@ block main
         name="position"
         placeholder="Tự động tăng"
         min="1"
+        value=category.position
       )
     div(class="form-group form-check form-check-inline")
       input(
@@ -75,7 +78,7 @@ block main
         id="statusActive"
         name="status"
         value="active"
-        checked
+        checked = (category.status == "active" ? true: false)
       )
       label(for="statusActive" class="form-check-label") Hoạt động
     div(class="form-group form-check form-check-inline")
@@ -85,12 +88,13 @@ block main
         id="statusInActive"
         name="status"
         value="inactive"
+        checked = (category.status == "inactive" ? true: false)
       )
       label(for="statusInActive" class="form-check-label") Dừng hoạt động
     div(class="form-group")
       button(
         type="submit"
         class="btn btn-primary"
-      ) Tạo mới
+      ) Cập nhật
 
   script(src="/admin/js/product.js")
