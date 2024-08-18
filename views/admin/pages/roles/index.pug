@@ -1,0 +1,50 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+
+block main  
+  h1(class="mb-4") Nhóm quyền
+  +alert-success(5000)
+  +alert-error(5000)
+  .card.mb-3 
+    .card-header Danh sách 
+    .card-body 
+      .row 
+        .col-8 
+        .col-4.text-right 
+          a(
+            href=`${prefixAdmin}/roles/create`
+            class="btn btn-outline-success"
+          ) + Thêm mới
+
+      table(
+        class="table table-sm table-hover"
+      )
+        thead 
+          tr  
+            th STT
+            th Nhóm quyền
+            th Mô tả ngắn
+            th Hành động
+        tbody 
+          if (records.length > 0)
+            each item, index in records 
+              tr 
+                td #{index + 1}
+                td #{item.title}
+                td #{item.description}
+                td 
+                  a(
+                    href=`${prefixAdmin}/roles/detail/${item._id}`
+                    class="btn btn-secondary btn-sm"
+                  ) Chi tiết
+                  a(
+                    href=`${prefixAdmin}/roles/edit/${item._id}`
+                    class="btn btn-primary btn-sm"
+                  ) Sửa
+                  a(
+                    href=`${prefixAdmin}/roles/delete/${item._id}`
+                    class="btn btn-danger btn-sm"
+                  ) Xóa
+          else 
+            tr 
+              td(colspan="4" class="text-center") Chưa có nhóm quyền được tạo
