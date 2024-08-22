@@ -2,32 +2,33 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main 
-  +alert-success(5000)
-  h1(class="mb-4") Chỉnh sửa nhóm quyền
+  if(role.permissions.includes("roles_edit"))
+    +alert-success(5000)
+    h1(class="mb-4") Chỉnh sửa nhóm quyền
 
-  form(
-    action=`${prefixAdmin}/roles/edit/${record.id}?_method=PATCH`
-    method="POST"
-  )
-    div(class="form-group")
-      label(for="title") Tiêu đề
-      input(
-        type="text"
-        class="form-control"
-        id="title"
-        name="title"
-        value=record.title
-      )
-    div(class="form-group")
-      label(for="desc") Mô tả
-      textarea(
-        class="form-control"
-        id="desc"
-        name="description"
-        rows="5"
-      ) #{record.description}
-    div(class="form-group")
-      button(
-        type="submit"
-        class="btn btn-primary"
-      ) Cập nhật
+    form(
+      action=`${prefixAdmin}/roles/edit/${record.id}?_method=PATCH`
+      method="POST"
+    )
+      div(class="form-group")
+        label(for="title") Tiêu đề
+        input(
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          value=record.title
+        )
+      div(class="form-group")
+        label(for="desc") Mô tả
+        textarea(
+          class="form-control"
+          id="desc"
+          name="description"
+          rows="5"
+        ) #{record.description}
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Cập nhật
