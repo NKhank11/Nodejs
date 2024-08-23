@@ -74,6 +74,7 @@ block main
                 th Vị trí
                 th Trạng thái
                 th Người tạo
+                th Người cập nhật
                 th Hành động
 
             tbody 
@@ -122,10 +123,16 @@ block main
                           class="badge badge-danger"
                         ) Dừng hoạt động
                   td  
-                    p #{item.accountFullName}
-                    p 
-                      +formatDateTime(item.createdBy.createdAt)
-                    
+                    if(item.createdBy)
+                      p #{item.accountFullName}
+                      p 
+                        +formatDateTime(item.createdBy.createdAt)
+                  td  
+                    - const updatedBy = item.updatedBy.slice(-1)[0]
+                    if(updatedBy)
+                      p #{updatedBy.accountFullName}
+                      p 
+                        +formatDateTime(updatedBy.updatedAt)
                   td
                     a(
                       href=`${prefixAdmin}/products/detail/${item.id}`
