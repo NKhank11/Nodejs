@@ -4,6 +4,7 @@ require("dotenv").config();
 const methodOverride = require('method-override');
 const bodyParser = require("body-parser");
 const flash = require('express-flash');
+const moment = require('moment');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
@@ -42,6 +43,7 @@ app.set("view engine", "pug");
 
 // App local variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;  // Tạo biến prefixAdmin để sử dụng trong tất cả các view
+app.locals.moment = moment;
 
 app.use(express.static(`${__dirname}/public`));
 
