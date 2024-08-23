@@ -9,7 +9,7 @@ const systemConfig = require("../../config/system");
 const createTreeHelper = require("../../helpers/createTree");
 
 // [GET] /admin/products
-module.exports.index = async (req, res) => {
+module.exports.index = async (req, res) => { 
 
   const filterStatus = filterStatusHelper(req.query);
 
@@ -113,7 +113,11 @@ module.exports.changeMulti = async (req, res) => {
     case "delete-all":
       await Product.updateMany({ _id: { $in: ids } }, {
         deleted: true,
-        deletedAt: new Date()
+        // deletedAt: new Date()
+        deletedBy: {
+          account_id: res.locals.user.id,
+          deletedAt: new Date(),
+        }
       });
       req.flash("success", `Đã xóa thành công ${ids.length} sản phẩm`);
       break;
@@ -145,7 +149,10 @@ module.exports.deleteItem = async (req, res) => {
   const id = req.params.id;
   await Product.updateOne({ _id: id }, {
     deleted: true,
-    deletedAt: new Date()
+    deletedBy: {
+      account_id: res.locals.user.id,
+      deletedAt: new Date(),
+    } 
     });
   req.flash("success", `Xóa sản phẩm thành công`);
   res.redirect("back");
