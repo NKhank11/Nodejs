@@ -1,4 +1,3 @@
-
 const Product = require("../../models/product.model")
 
 // [GET] /products
@@ -18,8 +17,6 @@ module.exports.index = async (req, res) => {
     item.priceNew = (item.price - item.price * item.discountPercentage / 100).toFixed(0);
     return item;
   })
-
-  console.log(products);
   res.render("client/pages/products/index", {
     pageTitle: "Trang Sản phẩm",
     products: newProducts
