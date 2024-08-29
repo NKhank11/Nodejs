@@ -69,7 +69,7 @@ module.exports.order = async (req, res) => {
 
   const orderInfo = {
     cart_id: cartId,
-    user: userInfo,
+    userInfo: userInfo,
     products: products,
   };
 
@@ -86,9 +86,29 @@ module.exports.order = async (req, res) => {
   res.redirect(`/checkout/success/${order.id}`);
 }
 
-// [POST] /success/:orderId
+// [POST] /checkoutsuccess/:orderId
 module.exports.success = async (req, res) => {
+  const order = await Order.findOne({
+    _id: req.params.orderId,
+  })
+
+  // console.log(order);
+
+  for(const product of order.products) {
+    const productInfo = await Product.findOne({
+      _id: product.product_id,
+    }).select("title thumbnail");
+
+    product.productInfo = productInfo;
+
+    product.priceNew = parseInt(productsHelper.priceNewProduct(product));
+    product.totalPrice = product.priceNew * product.quantity
+  }
+
+  order.totalPrice = order.products.reduce((total, item) => total + item.totalPrice, 0);
+
   res.render("client/pages/checkout/success", {
     pageTitle: "Đặt hàng thành công",
+    order: order,
   });
 }
