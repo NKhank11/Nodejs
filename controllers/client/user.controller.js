@@ -3,6 +3,7 @@ const md5 = require("md5");
 
 const generateHelper = require("../../helpers/generate.js");
 const ForgotPassword = require("../../models/forgot-password.model");
+const sendMailHelper = require("../../helpers/sendMail.js");
 
 // [GET] /user/register
 module.exports.register = async (req, res) => {
@@ -116,6 +117,74 @@ module.exports.forgotPasswordPost = async (req, res) => {
   const forgotPassword = new ForgotPassword(objectForgotPassword);
   await forgotPassword.save();
 
-  // Nếu tồn tại thì gửi mã OTP qua email (làm sau)
-  res.send("OK");
+  // Nếu tồn tại thì gửi mã OTP qua email
+  const subject = "Mã OTP lấy lại mật khẩu";
+  const html = `
+    Mã OTP của bạn là: <b>${otp}</b>. Thời hạn sử dụng là 30s.
+  `;
+
+  sendMailHelper.sendMail(email, subject, html);
+
+
+  res.redirect(`/user/password/otp?email=${email}`);
+  
+}
+
+// [GET] /user/password/otp
+module.exports.otpPassword = async (req, res) => {
+  const email = req.query.email;
+  res.render("client/pages/user/otp-password", {
+    pageTitle: "Nhập mã OTP",
+    email: email,
+  });
+}
+
+// [POST] /user/password/otp
+module.exports.otpPasswordPost = async (req, res) => {
+  const email = req.body.email;
+  const otp = req.body.otp;
+
+  const result = await ForgotPassword.findOne({
+    email: email,
+    otp: otp,
+  });
+
+
+  if(!result) {
+    req.flash("error", "Mã OTP không chính xác");
+    res.redirect("back");
+    return;
+  }
+
+  const user = await User.findOne({
+    email: email,
+  });
+
+  res.cookie("tokenUser", user.tokenUser);
+
+  res.redirect("/user/password/reset");
+
+}
+
+// [GET] /user/password/reset
+module.exports.resetPassword = async (req, res) => {
+  res.render("client/pages/user/reset-password", {
+    pageTitle: "Đổi mật khẩu",
+  });
+}
+
+// [POST] /user/password/reset
+module.exports.resetPasswordPost = async (req, res) => {
+  const password = req.body.password;
+  const tokenUser = req.cookies.tokenUser;
+
+  await User.updateOne({
+    tokenUser: tokenUser,
+  }, {
+    password: md5(password),
+  })
+
+  req.flash("success", "Đổi mật khẩu thành công");
+  res.redirect("/");
+
 }
