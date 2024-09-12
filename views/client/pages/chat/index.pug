@@ -9,7 +9,7 @@ block main
 
     .row 
       .col-12 
-        .chat 
+        .chat(my-id=user.id) 
           .inner-body 
             each chat in chats 
               div(class=(chat.user_id == user.id ? "inner-outgoing" : "inner-incoming"))
@@ -17,24 +17,6 @@ block main
                   .inner-name #{chat.infoUser.fullName}
                 .inner-content 
                   | #{chat.content}
-            //- .inner-incoming
-            //-   .inner-name A
-            //-   .inner-content 
-            //-     | Hello every body, today I'm going to talk about the concept called chunking
-            //- .inner-outgoing 
-            //-   .inner-content
-            //-     | Chunking is a strategy that 
-            //- .inner-incoming 
-            //-   .inner-name A
-            //-   .inner-content
-            //-     | Great speakers use very effectively
-            //- .inner-outgoing 
-            //-   .inner-content
-            //-     | Hehehe :))
-            //- .inner-incoming
-            //-   .inner-name A
-            //-   .inner-content
-            //-     | I'm glad you like it
           .inner-foot
             form(
               class="inner-form"

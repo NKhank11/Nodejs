@@ -245,6 +245,11 @@
 
 
 /* Chat */
+.chat .inner-body {
+  max-height: 450px;
+  overflow-y: auto;
+}
+
 .chat .inner-incoming {
   margin-bottom: 10px;
 }
