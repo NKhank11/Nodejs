@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug 
+
+block main 
+  .container.my-3 
+    .row  
+      .col-12 
+        +box-head("Chat")
+
+    .row 
+      .col-12 
+        .chat 
+          .inner-body 
+            .inner-incoming
+              .inner-name A
+              .inner-content 
+                | Hello every body, today I'm going to talk about the concept called chunking
+            .inner-outgoing 
+              .inner-content
+                | Chunking is a strategy that 
+            .inner-incoming 
+              .inner-name A
+              .inner-content
+                | Great speakers use very effectively
+            .inner-outgoing 
+              .inner-content
+                | Hehehe :))
+            .inner-incoming
+              .inner-name A
+              .inner-content
+                | I'm glad you like it
+          .inner-foot
+            form(
+              class="inner-form"
+              action=""
+            )
+              input(
+                type="text"
+                placeholder = "Type a message..."
+                name="content"
+              )
+              button 
+                i.fa-solid.fa-paper-plane
+                
