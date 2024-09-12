@@ -11,24 +11,30 @@ block main
       .col-12 
         .chat 
           .inner-body 
-            .inner-incoming
-              .inner-name A
-              .inner-content 
-                | Hello every body, today I'm going to talk about the concept called chunking
-            .inner-outgoing 
-              .inner-content
-                | Chunking is a strategy that 
-            .inner-incoming 
-              .inner-name A
-              .inner-content
-                | Great speakers use very effectively
-            .inner-outgoing 
-              .inner-content
-                | Hehehe :))
-            .inner-incoming
-              .inner-name A
-              .inner-content
-                | I'm glad you like it
+            each chat in chats 
+              div(class=(chat.user_id == user.id ? "inner-outgoing" : "inner-incoming"))
+                if(chat.user_id != user.id)
+                  .inner-name #{chat.infoUser.fullName}
+                .inner-content 
+                  | #{chat.content}
+            //- .inner-incoming
+            //-   .inner-name A
+            //-   .inner-content 
+            //-     | Hello every body, today I'm going to talk about the concept called chunking
+            //- .inner-outgoing 
+            //-   .inner-content
+            //-     | Chunking is a strategy that 
+            //- .inner-incoming 
+            //-   .inner-name A
+            //-   .inner-content
+            //-     | Great speakers use very effectively
+            //- .inner-outgoing 
+            //-   .inner-content
+            //-     | Hehehe :))
+            //- .inner-incoming
+            //-   .inner-name A
+            //-   .inner-content
+            //-     | I'm glad you like it
           .inner-foot
             form(
               class="inner-form"
