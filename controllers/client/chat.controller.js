@@ -31,6 +31,15 @@ module.exports.index = async (req, res) => {
     deleted: false
   });
 
+  // Nếu không có chat nào
+  if(!chats) {
+    res.render("client/pages/chat/index", {
+      pageTitle: "Chat",
+      chats: []
+    });
+    return;
+  }
+
   for(const chat of chats) {
     const infoUser = await User.findOne({
       _id: chat.user_id
