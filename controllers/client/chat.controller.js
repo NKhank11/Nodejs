@@ -8,6 +8,7 @@ module.exports.index = async (req, res) => {
 
   // SocketIO
   _io.once("connection", (socket) => {
+    // CLIENT_SEND_MESSAGE
     socket.on("CLIENT_SEND_MESSAGE", async (content) => {
       // Lưu vào db
       const chat = new Chat({
@@ -23,6 +24,17 @@ module.exports.index = async (req, res) => {
         content: content,
       });
     });
+    // END CLIENT_SEND_MESSAGE
+
+    // CLIENT_SEND_TYPING
+    socket.on("CLIENT_SEND_TYPING", (type) => {
+      socket.broadcast.emit("SERVER_RETURN_TYPING", {
+        userId: userId,
+        fullName: fullName,
+        type: type,
+      });
+    })
+    // END CLIENT_SEND_TYPING
   })
   // End SocketIO
 
