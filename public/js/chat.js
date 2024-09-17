@@ -31,7 +31,7 @@ if(formSendData) {
 // SERVER_RETURN_MESSAGE
 socket.on("SERVER_RETURN_MESSAGE", (data) => {
   const myId = document.querySelector("[my-id]").getAttribute("my-id");
-  const body = document.querySelector(".chat .inner-body");
+  const bodyChat = document.querySelector(".chat .inner-body");
   const boxTyping = document.querySelector(".chat .inner-list-typing");
 
   const div = document.createElement("div");
@@ -66,11 +66,16 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   div.innerHTML = `
     ${htmlFullName}
     ${htmlContent}
+    ${htmlImages}
   `;
 
   body.insertBefore(div, boxTyping);
 
-  body.scrollTop = body.scrollHeight;
+  bodyChat.scrollTop = bodyChat.scrollHeight;
+
+  // Preview Images
+  const gallery = new Viewer(div);
+
 })
 // End SERVER_RETURN_MESSAGE
 
@@ -143,6 +148,7 @@ if(elementListTyping) {
   socket.on("SERVER_RETURN_TYPING", (data) => {
     console.log(data);
     if(data.type == "show") {
+      const bodyChat = document.querySelector(".chat .inner-body");
       const existTyping = elementListTyping.querySelector(`[user-id="${data.userId}"]`);
       
       if(!existTyping) {
@@ -160,7 +166,7 @@ if(elementListTyping) {
         `;
   
         elementListTyping.appendChild(boxTyping);
-        body.scrollTop = body.scrollHeight;
+        bodyChat.scrollTop = bodyChat.scrollHeight;
       }
     } else if(data.type == "hidden") {
       const boxTypingRemove = elementListTyping.querySelector(`[user-id="${data.userId}"]`);
@@ -171,3 +177,10 @@ if(elementListTyping) {
   })
 }
 // END SERVER_RETURN_TYPING
+
+// Preview Full Image
+const bodyChatPreviewImage = document.querySelector(".chat .inner-body");
+if(bodyChatPreviewImage) {
+  const gallery = new Viewer(bodyChatPreviewImage);
+}
+// End Preview Full Image
