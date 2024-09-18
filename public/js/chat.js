@@ -1,7 +1,7 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 
 // File-upload-with-preview
-const upload = new FileUploadWithPreview('upload-image', {
+const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-image', {
   multiple: true,
   maxFileCount: 6,
 });
@@ -14,6 +14,7 @@ if(formSendData) {
     e.preventDefault();
     const content = e.target.elements.content.value;
     const images = upload.cachedFileArray;
+    console.log(images);
     if(content || images.length > 0) {
       socket.emit("CLIENT_SEND_MESSAGE", {
         content: content,
@@ -69,7 +70,7 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     ${htmlImages}
   `;
 
-  body.insertBefore(div, boxTyping);
+  bodyChat.insertBefore(div, boxTyping);
 
   bodyChat.scrollTop = bodyChat.scrollHeight;
 
@@ -90,10 +91,8 @@ if(bodyChat) {
 // Show icon chat
 // Show popup
 const buttonIcon = document.querySelector(".button-icon");
-console.log(buttonIcon);
 if(buttonIcon) {
   const tooltip = document.querySelector(".tooltip");
-  console.log(tooltip);
   Popper.createPopper(buttonIcon, tooltip, {
     placement: "top"
   });

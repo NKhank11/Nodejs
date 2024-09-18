@@ -1,3 +1,5 @@
+const Chat = require("../../models/chat.model");
+
 const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
 
 module.exports = (res) => {
@@ -13,8 +15,11 @@ module.exports = (res) => {
     
       for(const imageBuffer of data.images) {
         const link = await uploadToCloudinary(imageBuffer);
+        console.log('Cloudinary link:', link);
         images.push(link);
       }
+
+      console.log(images);
 
       // Lưu vào db
       const chat = new Chat({
