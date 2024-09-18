@@ -10,6 +10,7 @@ module.exports = (res) => {
   _io.once("connection", (socket) => {
     // CLIENT_SEND_MESSAGE
     socket.on("CLIENT_SEND_MESSAGE", async (data) => {
+      console.log(data.images)
       // Upload ảnh lên cloudinary
       let images = [];
     

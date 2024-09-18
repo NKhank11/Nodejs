@@ -19,8 +19,9 @@ block main
                   .inner-content 
                     | #{chat.content}
                 if(chat.images)
-                  each image in chat.images 
-                    img(src=image)
+                  .inner-images
+                    each image in chat.images 
+                      img(src=image)
             
             //-Quan trọng
             div(class="inner-list-typing")

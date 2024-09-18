@@ -10,15 +10,24 @@ const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-image', {
 // CLIENT_SEND_MESSAGE
 const formSendData = document.querySelector(".chat .inner-form");
 if(formSendData) {
-  formSendData.addEventListener("submit", (e) => {
+  formSendData.addEventListener("submit", async (e) => {
     e.preventDefault();
     const content = e.target.elements.content.value;
     const images = upload.cachedFileArray;
     console.log(images);
+    // Convert File objects to ArrayBuffer
+    const bufferImages = await Promise.all(Array.from(images).map(file => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result); // ArrayBuffer
+        reader.onerror = () => reject(new Error("Failed to read file"));
+        reader.readAsArrayBuffer(file); // Convert file to ArrayBuffer (buffer)
+      });
+    }));
     if(content || images.length > 0) {
       socket.emit("CLIENT_SEND_MESSAGE", {
         content: content,
-        images: images
+        images: bufferImages
       });
       e.target.elements.content.value = "";
       upload.resetPreviewPanel(); // clear all selected images
