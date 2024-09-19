@@ -115,5 +115,57 @@ module.exports = (res) => {
       }
     });
     // Hết Chức năng từ chối kết bạn
+
+
+    // Chức năng chấp nhận kết bạn
+    socket.on("CLIENT_ACCEPT_FRIEND", async (userId) => {
+      const myUserId = res.locals.user.id; 
+
+      // console.log(myUserId); // Id của B, vì bây h đang đóng vai trò là B nhận dc lời kết bạn
+      // console.log(userId); // Id của A
+
+      // Thêm {user_id, room_chat_id} của A vào friendList của B
+      // Xóa id của A trong acceptFriends của B
+      const existsIdAinB = await User.findOne({
+        _id: myUserId,
+        acceptFriends: userId
+      });
+
+      if(existsIdAinB) {
+        await User.updateOne({
+          _id: myUserId
+        }, {
+          $push: {
+            friendList: {
+              user_id: userId,
+              room_chat_id: "",
+            }
+          },
+          $pull: { acceptFriends: userId}
+        })
+      }
+      
+      // Thêm {user_id, room_chat_id} của B vào friendList của A
+      // Xóa id của B trong requestFriends của A  
+      const existsIdBinA = await User.findOne({
+        _id: userId,
+        requestFriends: myUserId
+      });
+
+      if(existsIdBinA) {
+        await User.updateOne({
+          _id: userId
+        }, {
+          $push: {
+            friendList: {
+              user_id: myUserId,
+              room_chat_id: "",
+            }
+          },
+          $pull: { requestFriends: myUserId}
+        });
+      }
+    });
+    // Hết Chức năng chấp nhận kết bạn
   });
 }
