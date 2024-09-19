@@ -416,7 +416,7 @@
 
 /* Box User */
 .box-user {
-  display: flex;
+  display: inline-flex;
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 5px;
