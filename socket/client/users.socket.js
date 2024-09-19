@@ -87,6 +87,19 @@ module.exports = (res) => {
           $pull: { requestFriends: userId}
         });
       }
+
+      // Lấy ra độ dài acceptFriends của B và trả về cho B
+      const infoUser = await User.findOne({
+        _id: userId
+      });
+
+      const lengthAcceptFriends = infoUser.acceptFriends.length;
+
+      socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+        userId: userId,
+        lengthAcceptFriends: lengthAcceptFriends
+      });
+
     });
     // Hết Chức năng hủy gửi yêu cầu
 
